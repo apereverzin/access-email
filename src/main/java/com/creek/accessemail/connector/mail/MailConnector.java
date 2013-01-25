@@ -18,6 +18,9 @@ import javax.mail.internet.MimeMessage;
 
 import com.sun.mail.pop3.POP3SSLStore;
 
+import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_HOST_PROPERTY;
+import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_PORT_PROPERTY;
+
 /**
  * 
  * @author Andrey Pereverzin
@@ -122,8 +125,8 @@ public class MailConnector {
     }
     
     public void connectTransport(Transport transport) throws MessagingException {
-        transport.connect(propertiesStorage.getSmtpProperties().getProperty(MailPropertiesStorage.MAIL_SMTP_HOST), 
-                Integer.parseInt(propertiesStorage.getSmtpProperties().getProperty(MailPropertiesStorage.MAIL_SMTP_PORT)), 
+        transport.connect(propertiesStorage.getSmtpProperties().getProperty(MAIL_SMTP_HOST_PROPERTY), 
+                Integer.parseInt(propertiesStorage.getSmtpProperties().getProperty(MAIL_SMTP_PORT_PROPERTY)), 
                 propertiesStorage.getUsername(), 
                 propertiesStorage.getPassword());
     }

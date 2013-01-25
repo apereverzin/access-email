@@ -37,8 +37,8 @@ public class MailConnectorIT {
     @Ignore
     public void shouldReceiveMessagesFromGMail() throws ConnectorException {
         Properties props = PredefinedMailProperties.getPredefinedPropertiesForServer(GMAIL);
-        props.setProperty(MailPropertiesStorage.MAIL_USERNAME, USERNAME);
-        props.setProperty(MailPropertiesStorage.MAIL_PASSWORD, PASSWORD);
+        props.setProperty(MailPropertiesStorage.MAIL_USERNAME_PROPERTY, USERNAME);
+        props.setProperty(MailPropertiesStorage.MAIL_PASSWORD_PROPERTY, PASSWORD);
         mailMessageConnector = new MailConnector(props);
         Set<Message> messages = mailMessageConnector.receiveMessages(SUBJECT);
         System.out.println(messages.size());
@@ -48,8 +48,8 @@ public class MailConnectorIT {
     @Ignore
     public void shouldSendMessagesFromGMail() throws ConnectorException {
         Properties props = PredefinedMailProperties.getPredefinedPropertiesForServer(GMAIL);
-        props.setProperty(MailPropertiesStorage.MAIL_USERNAME, USERNAME);
-        props.setProperty(MailPropertiesStorage.MAIL_PASSWORD, PASSWORD);
+        props.setProperty(MailPropertiesStorage.MAIL_USERNAME_PROPERTY, USERNAME);
+        props.setProperty(MailPropertiesStorage.MAIL_PASSWORD_PROPERTY, PASSWORD);
         mailMessageConnector = new MailConnector(props);
         mailMessageConnector.sendMessage(SUBJECT, GMAIL_ADDRESS, "smth", new String[]{GMAIL_ADDRESS});
     }
@@ -58,8 +58,8 @@ public class MailConnectorIT {
     @Ignore
     public void shouldReceiveMessagesFromAol() throws ConnectorException {
         Properties props = PredefinedMailProperties.getPredefinedPropertiesForServer(AOL);
-        props.setProperty(MailPropertiesStorage.MAIL_USERNAME, USERNAME);
-        props.setProperty(MailPropertiesStorage.MAIL_PASSWORD, PASSWORD);
+        props.setProperty(MailPropertiesStorage.MAIL_USERNAME_PROPERTY, USERNAME);
+        props.setProperty(MailPropertiesStorage.MAIL_PASSWORD_PROPERTY, PASSWORD);
         mailMessageConnector = new MailConnector(props);
         Set<Message> messages = mailMessageConnector.receiveMessages(SUBJECT);
         System.out.println(messages.size());
@@ -69,8 +69,8 @@ public class MailConnectorIT {
     @Ignore
     public void shouldReceiveMessagesFromYahooCom() throws ConnectorException {
         Properties props = PredefinedMailProperties.getPredefinedPropertiesForServer(YAHOOCOM);
-        props.setProperty(MailPropertiesStorage.MAIL_USERNAME, "andrey.pereverzin@yahoo.com");
-        props.setProperty(MailPropertiesStorage.MAIL_PASSWORD, PASSWORD);
+        props.setProperty(MailPropertiesStorage.MAIL_USERNAME_PROPERTY, "andrey.pereverzin@yahoo.com");
+        props.setProperty(MailPropertiesStorage.MAIL_PASSWORD_PROPERTY, PASSWORD);
         mailMessageConnector = new MailConnector(props);
         Set<Message> messages = mailMessageConnector.receiveMessages(SUBJECT);
         System.out.println(messages.size());

@@ -20,46 +20,46 @@ public class MailPropertiesStorage {
     private Properties pop3Props = new Properties();
     private Properties smtpProps = new Properties();
 
-    public static final String MAIL_USERNAME = "mail.username";
-    public static final String MAIL_PASSWORD = "mail.password";
-    public static final String MAIL_STORE_PROTOCOL = "mail.store.protocol";
+    public static final String MAIL_USERNAME_PROPERTY = "mail.username";
+    public static final String MAIL_PASSWORD_PROPERTY = "mail.password";
+    public static final String MAIL_STORE_PROTOCOL_PROPERTY = "mail.store.protocol";
 
-    public static final String MAIL_SMTP_HOST = "mail.smtp.host";
-    public static final String MAIL_SMTP_PORT = "mail.smtp.port";
-    public static final String MAIL_SMTP_TRANSPORT_PROTOCOL = "mail.smtp.transport.protocol";
-    public static final String MAIL_SMTP_AUTH = "mail.smtp.auth";
-    public static final String MAIL_SMTP_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
-    public static final String MAIL_SMTP_SOCKET_FACTORY_CLASS = "mail.smtp.socketFactory.class";
-    public static final String MAIL_SMTP_SOCKET_FACTORY_PORT = "mail.smtp.socketFactory.port";
-    public static final String MAIL_POP3_SOCKET_FACTORY_CLASS = "mail.pop3.socketFactory.class";
-    public static final String MAIL_POP3_SOCKET_FACTORY_FALLBACK = "mail.pop3.socketFactory.fallback";
-    public static final String MAIL_POP3_HOST = "mail.pop3.host";
-    public static final String MAIL_POP3_PORT = "mail.pop3.port";
-    public static final String MAIL_POP3_SOCKET_FACTORY_PORT = "mail.pop3.socketFactory.port";
+    public static final String MAIL_SMTP_HOST_PROPERTY = "mail.smtp.host";
+    public static final String MAIL_SMTP_PORT_PROPERTY = "mail.smtp.port";
+    public static final String MAIL_SMTP_TRANSPORT_PROTOCOL_PROPERTY = "mail.smtp.transport.protocol";
+    public static final String MAIL_SMTP_AUTH_PROPERTY = "mail.smtp.auth";
+    public static final String MAIL_SMTP_STARTTLS_ENABLE_PROPERTY = "mail.smtp.starttls.enable";
+    public static final String MAIL_SMTP_SOCKET_FACTORY_CLASS_PROPERTY = "mail.smtp.socketFactory.class";
+    public static final String MAIL_SMTP_SOCKET_FACTORY_PORT_PROPERTY = "mail.smtp.socketFactory.port";
+    public static final String MAIL_POP3_SOCKET_FACTORY_CLASS_PROPERTY = "mail.pop3.socketFactory.class";
+    public static final String MAIL_POP3_SOCKET_FACTORY_FALLBACK_PROPERTY = "mail.pop3.socketFactory.fallback";
+    public static final String MAIL_POP3_HOST_PROPERTY = "mail.pop3.host";
+    public static final String MAIL_POP3_PORT_PROPERTY = "mail.pop3.port";
+    public static final String MAIL_POP3_SOCKET_FACTORY_PORT_PROPERTY = "mail.pop3.socketFactory.port";
 
-    public static final String MAIL_IMAP_HOST = "mail.imap.host";
-    public static final String MAIL_IMAP_PORT = "mail.imap.port";
+    public static final String MAIL_IMAP_HOST_PROPERTY = "mail.imap.host";
+    public static final String MAIL_IMAP_PORT_PROPERTY = "mail.imap.port";
 
     public MailPropertiesStorage(Properties mailProps) {
         this.mailProps = mailProps;
-        username = mailProps.getProperty(MAIL_USERNAME);
-        password = mailProps.getProperty(MAIL_PASSWORD);
+        username = mailProps.getProperty(MAIL_USERNAME_PROPERTY);
+        password = mailProps.getProperty(MAIL_PASSWORD_PROPERTY);
         
-        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_HOST);
-        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_PORT);
-        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_TRANSPORT_PROTOCOL);
-        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_AUTH);
-        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_STARTTLS_ENABLE);
-        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_SOCKET_FACTORY_PORT);
-        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_SOCKET_FACTORY_CLASS);
+        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_HOST_PROPERTY);
+        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_PORT_PROPERTY);
+        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_TRANSPORT_PROTOCOL_PROPERTY);
+        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_AUTH_PROPERTY);
+        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_STARTTLS_ENABLE_PROPERTY);
+        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_SOCKET_FACTORY_PORT_PROPERTY);
+        setPropertyIfNotNull(mailProps, smtpProps, MAIL_SMTP_SOCKET_FACTORY_CLASS_PROPERTY);
         
-        setPropertyIfNotNull(mailProps, pop3Props, MAIL_POP3_SOCKET_FACTORY_CLASS);
-        setPropertyIfNotNull(mailProps, pop3Props, MAIL_POP3_SOCKET_FACTORY_FALLBACK);
-        setPropertyIfNotNull(mailProps, pop3Props, MAIL_POP3_HOST);
-        setPropertyIfNotNull(mailProps, pop3Props, MAIL_POP3_PORT);
-        setPropertyIfNotNull(mailProps, pop3Props, MAIL_POP3_SOCKET_FACTORY_PORT);
+        setPropertyIfNotNull(mailProps, pop3Props, MAIL_POP3_SOCKET_FACTORY_CLASS_PROPERTY);
+        setPropertyIfNotNull(mailProps, pop3Props, MAIL_POP3_SOCKET_FACTORY_FALLBACK_PROPERTY);
+        setPropertyIfNotNull(mailProps, pop3Props, MAIL_POP3_HOST_PROPERTY);
+        setPropertyIfNotNull(mailProps, pop3Props, MAIL_POP3_PORT_PROPERTY);
+        setPropertyIfNotNull(mailProps, pop3Props, MAIL_POP3_SOCKET_FACTORY_PORT_PROPERTY);
 
-        setPropertyIfNotNull(mailProps, imapProps, MAIL_STORE_PROTOCOL);
+        setPropertyIfNotNull(mailProps, imapProps, MAIL_STORE_PROTOCOL_PROPERTY);
     }
     
     public Session getSMTPSession() {
@@ -76,8 +76,8 @@ public class MailPropertiesStorage {
     }
 
     public URLName getPop3URLName() {
-        URLName url = new URLName("pop3", pop3Props.getProperty(MAIL_POP3_HOST), 
-                new Integer(pop3Props.getProperty(MAIL_POP3_SOCKET_FACTORY_PORT)), "", username, password);
+        URLName url = new URLName("pop3", pop3Props.getProperty(MAIL_POP3_HOST_PROPERTY), 
+                new Integer(pop3Props.getProperty(MAIL_POP3_SOCKET_FACTORY_PORT_PROPERTY)), "", username, password);
         return url;
     }
     
