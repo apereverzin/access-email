@@ -64,10 +64,10 @@ public class MailConnector {
         }
     }
     
-    public void sendMessage(String subject, String from, String text, String[] emailsTo) throws ConnectorException {
+    public void sendMessage(String subject, String from, String text, String... emailsTo) throws ConnectorException {
         Session session = propertiesStorage.getSMTPSession();
         try {
-            sendToAddresses(subject, from, text, emailsTo, session);
+            sendToAddresses(subject, from, text, session, emailsTo);
         } catch (MessagingException e) {
             throw new ConnectorException(e);
         }
@@ -104,7 +104,7 @@ public class MailConnector {
         }
     }
 
-    private void sendToAddresses(String subject, String from, String text, String[] emailAddresses, Session session) throws MessagingException {
+    private void sendToAddresses(String subject, String from, String text, Session session, String... emailAddresses) throws MessagingException {
         Message mailMessage = new MimeMessage(session);
         mailMessage.setFrom(new InternetAddress(from));
         StringBuilder sb = new StringBuilder();
