@@ -16,7 +16,7 @@ import com.creek.accessemail.connector.mail.PredefinedMailProperties;
 
 /**
  * 
- * @author andreypereverzin
+ * @author Andrey Pereverzin
  */
 public class MailConnectorIT {
     private MailConnector mailMessageConnector;
