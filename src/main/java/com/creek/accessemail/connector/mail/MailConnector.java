@@ -1,5 +1,6 @@
 package com.creek.accessemail.connector.mail;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
@@ -44,15 +45,15 @@ public class MailConnector {
         }
     }
 
-    public Set<Message> receiveMessages(String subject) throws ConnectorException {
+    public Set<Object> receiveMessages(String subject) throws ConnectorException {
         try {
             Folder inboxFolder = getFolder(INBOX_FOLDER_NAME);
             inboxFolder.open(Folder.READ_WRITE);
-            Set<Message> messages = new HashSet<Message>();
+            Set<Object> messages = new HashSet<Object>();
 
             Message[] msgs = inboxFolder.search(new SubjectSearchTerm(subject));
             for (Message msg : msgs) {
-                messages.add(msg);
+                messages.add(msg.getContent());
                 msg.setFlag(Flag.DELETED, true);
             }
             
@@ -60,6 +61,8 @@ public class MailConnector {
             inboxFolder.close(true);
             return messages;
         } catch (MessagingException ex) {
+            throw new ConnectorException(ex);
+        } catch (IOException ex) {
             throw new ConnectorException(ex);
         }
     }

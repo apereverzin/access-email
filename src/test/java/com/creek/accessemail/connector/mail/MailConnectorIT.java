@@ -40,7 +40,7 @@ public class MailConnectorIT {
         props.setProperty(MailPropertiesStorage.MAIL_USERNAME_PROPERTY, USERNAME);
         props.setProperty(MailPropertiesStorage.MAIL_PASSWORD_PROPERTY, PASSWORD);
         mailMessageConnector = new MailConnector(props);
-        Set<Message> messages = mailMessageConnector.receiveMessages(SUBJECT);
+        Set<Object> messages = mailMessageConnector.receiveMessages(SUBJECT);
         System.out.println(messages.size());
     }
 
@@ -61,7 +61,7 @@ public class MailConnectorIT {
         props.setProperty(MailPropertiesStorage.MAIL_USERNAME_PROPERTY, USERNAME);
         props.setProperty(MailPropertiesStorage.MAIL_PASSWORD_PROPERTY, PASSWORD);
         mailMessageConnector = new MailConnector(props);
-        Set<Message> messages = mailMessageConnector.receiveMessages(SUBJECT);
+        Set<Object> messages = mailMessageConnector.receiveMessages(SUBJECT);
         System.out.println(messages.size());
     }
 
@@ -72,7 +72,7 @@ public class MailConnectorIT {
         props.setProperty(MailPropertiesStorage.MAIL_USERNAME_PROPERTY, "andrey.pereverzin@yahoo.com");
         props.setProperty(MailPropertiesStorage.MAIL_PASSWORD_PROPERTY, PASSWORD);
         mailMessageConnector = new MailConnector(props);
-        Set<Message> messages = mailMessageConnector.receiveMessages(SUBJECT);
+        Set<Object> messages = mailMessageConnector.receiveMessages(SUBJECT);
         System.out.println(messages.size());
     }
 }
