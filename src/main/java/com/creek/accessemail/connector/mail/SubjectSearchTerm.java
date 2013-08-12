@@ -7,7 +7,6 @@ import javax.mail.search.SearchTerm;
 /**
  * 
  * @author Andrey Pereverzin
- *
  */
 public class SubjectSearchTerm extends SearchTerm {
     private static final long serialVersionUID = 39029482l;

@@ -3,7 +3,6 @@ package com.creek.accessemail.connector.mail;
 /**
  * 
  * @author Andrey Pereverzin
- *
  */
 public class ConnectorException extends Exception {
     private static final long serialVersionUID = 34783772L;

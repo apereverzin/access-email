@@ -21,6 +21,9 @@ import com.sun.mail.pop3.POP3SSLStore;
 
 import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_HOST_PROPERTY;
 import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_PORT_PROPERTY;
+import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_HOST_PROPERTY;
+import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_PORT_PROPERTY;
+import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_PORT_PROPERTY;
 
 /**
  * 
@@ -28,6 +31,8 @@ import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SM
  */
 public class MailConnector {
     public static final String INBOX_FOLDER_NAME = "Inbox";
+    private static final String SMTP = "smtp";
+    private static final String POP3 = "pop3";
 
     private MailPropertiesStorage propertiesStorage;
 
@@ -38,8 +43,31 @@ public class MailConnector {
     public void checkSMTPConnection() throws ConnectorException {
         try {
             Session session = propertiesStorage.getSMTPSession();
-            Transport transport = session.getTransport("smtp");
+            Transport transport = session.getTransport(SMTP);
             connectTransport(transport);
+        } catch (MessagingException ex) {
+            throw new ConnectorException(ex);
+        }
+    }
+
+    // TODO implement this
+    public void checkIMAPConnection() throws ConnectorException {
+        // try {
+        // sessionKeeper.getIMAPStore().getDefaultFolder();
+        // } catch (MessagingException ex) {
+        // throw new ConnectorException(ex);
+        // }
+    }
+
+    public void checkPOP3Connection() throws ConnectorException {
+        int pop3Port = getPop3Port();
+        URLName url = new URLName(POP3, propertiesStorage.getPop3Properties().getProperty(MAIL_POP3_HOST_PROPERTY), 
+                pop3Port, "", propertiesStorage.getUsername()/*"andrey.pereverzin@gmail.com"*/, propertiesStorage.getPassword());
+
+        Session session = Session.getInstance(propertiesStorage.getPop3Properties(), null);
+        POP3SSLStore store = new POP3SSLStore(session, url);
+        try {
+            store.connect();
         } catch (MessagingException ex) {
             throw new ConnectorException(ex);
         }
@@ -56,8 +84,8 @@ public class MailConnector {
                 messages.add(msg.getContent());
                 msg.setFlag(Flag.DELETED, true);
             }
-            
-            //inboxFolder.expunge();
+
+            // inboxFolder.expunge();
             inboxFolder.close(true);
             return messages;
         } catch (MessagingException ex) {
@@ -66,7 +94,7 @@ public class MailConnector {
             throw new ConnectorException(ex);
         }
     }
-    
+
     public void sendMessage(String subject, String from, String text, String... emailsTo) throws ConnectorException {
         Session session = propertiesStorage.getSMTPSession();
         try {
@@ -121,35 +149,41 @@ public class MailConnector {
         mailMessage.setSubject(subject);
         mailMessage.setText(text);
 
-        Transport transport = session.getTransport("smtp");
+        Transport transport = session.getTransport(SMTP);
         connectTransport(transport);
 
         Transport.send(mailMessage);
     }
-    
+
     public void connectTransport(Transport transport) throws MessagingException {
-        transport.connect(propertiesStorage.getSmtpProperties().getProperty(MAIL_SMTP_HOST_PROPERTY), 
-                Integer.parseInt(propertiesStorage.getSmtpProperties().getProperty(MAIL_SMTP_PORT_PROPERTY)), 
-                propertiesStorage.getUsername(), 
-                propertiesStorage.getPassword());
+        transport.connect(propertiesStorage.getSmtpProperties().getProperty(MAIL_SMTP_HOST_PROPERTY), Integer.parseInt(propertiesStorage.getSmtpProperties().getProperty(MAIL_SMTP_PORT_PROPERTY)),
+                propertiesStorage.getUsername(), propertiesStorage.getPassword());
     }
 
     private Session getSMTPSession() {
-        return Session.getInstance(propertiesStorage.getSmtpProperties(),
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(propertiesStorage.getUsername(), propertiesStorage.getPassword());
-                    }
-                });
+        return Session.getInstance(propertiesStorage.getSmtpProperties(), new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(propertiesStorage.getUsername(), propertiesStorage.getPassword());
+            }
+        });
     }
-    
+
     private Store getPop3Store() throws MessagingException {
         URLName url = propertiesStorage.getPop3URLName();
-        
+
         Session session = Session.getInstance(propertiesStorage.getPop3Properties(), null);
         Store store = new POP3SSLStore(session, url);
         store.connect();
-        
+
         return store;
+    }
+    
+    private int getPop3Port() {
+        String port = propertiesStorage.getPop3Properties().getProperty(MAIL_POP3_PORT_PROPERTY);
+        if (port == null) {
+            port = propertiesStorage.getPop3Properties().getProperty(MAIL_POP3S_PORT_PROPERTY);
+        }
+        
+        return Integer.parseInt(port);
     }
 }
