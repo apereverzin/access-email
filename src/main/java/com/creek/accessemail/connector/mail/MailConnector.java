@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.Transport;
@@ -21,9 +20,10 @@ import com.sun.mail.pop3.POP3SSLStore;
 
 import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_HOST_PROPERTY;
 import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_PORT_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_HOST_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_PORT_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_PORT_PROPERTY;
+import static com.creek.accessemail.connector.mail.TrueFalse.TRUE;
+import static com.creek.accessemail.connector.mail.TrueFalse.FALSE;
+import static com.creek.accessemail.connector.mail.CheckResult.SUCCESS;
+import static com.creek.accessemail.connector.mail.CheckResult.FAILURE;
 
 /**
  * 
@@ -32,21 +32,72 @@ import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_PO
 public class MailConnector {
     public static final String INBOX_FOLDER_NAME = "Inbox";
     private static final String SMTP = "smtp";
-    private static final String POP3 = "pop3";
 
-    private MailPropertiesStorage propertiesStorage;
+    private final MailPropertiesStorage propertiesStorage;
 
     public MailConnector(Properties mailProps) {
         propertiesStorage = new MailPropertiesStorage(mailProps);
     }
-
+    
     public void checkSMTPConnection() throws ConnectorException {
-        try {
-            Session session = propertiesStorage.getSMTPSession();
-            Transport transport = session.getTransport(SMTP);
-            connectTransport(transport);
-        } catch (MessagingException ex) {
-            throw new ConnectorException(ex);
+        if (propertiesStorage.isUseFullEmailAddressTrue()) {
+            Session session = propertiesStorage.getSMTPSessionUsingEmailAddress();
+            System.out.println("---1");
+            checkSmtpConnection(session);
+            System.out.println("---2");
+        } else if (propertiesStorage.isUseFullEmailAddressFalse()) {
+            Session session = propertiesStorage.getSMTPSessionUsingUsername();
+            System.out.println("---3");
+            checkSmtpConnection(session);
+            System.out.println("---4");
+        } else { // UNDEFINED
+            try {
+                Session session = propertiesStorage.getSMTPSessionUsingUsername();
+                Transport transport = session.getTransport(SMTP);
+                System.out.println("---5");
+                connectTransport(transport);
+                System.out.println("---6");
+                propertiesStorage.setUseFullEmailAddress(FALSE);
+                propertiesStorage.setSmtpCheckResult(SUCCESS);
+            } catch (MessagingException ex) {
+                Session session = propertiesStorage.getSMTPSessionUsingEmailAddress();
+                System.out.println("---7");
+                checkSmtpConnection(session);
+                System.out.println("---8");
+                propertiesStorage.setUseFullEmailAddress(TRUE);
+            }
+        }
+    }
+
+    public void checkPOP3Connection() throws ConnectorException {
+        if (propertiesStorage.isUseFullEmailAddressTrue()) {
+            URLName url = propertiesStorage.getPop3URLNameUsingEmailAddress();
+            System.out.println("---9");
+            checkPop3Connection(url);
+            System.out.println("---10");
+        } else if (propertiesStorage.isUseFullEmailAddressFalse()) {
+            URLName url = propertiesStorage.getPop3URLNameUsingUsername();
+            System.out.println("---11");
+            checkPop3Connection(url);
+            System.out.println("---12");
+        } else { // UNDEFINED
+            try {
+                URLName url = propertiesStorage.getPop3URLNameUsingUsername();
+                Session session = Session.getInstance(propertiesStorage.getPop3Properties(), null);
+                POP3SSLStore store = new POP3SSLStore(session, url);
+                System.out.println("---13");
+                store.connect();
+                System.out.println("---14");
+                propertiesStorage.setUseFullEmailAddress(FALSE);
+                propertiesStorage.setPop3CheckResult(SUCCESS);
+            } catch (MessagingException ex) {
+                URLName url = propertiesStorage.getPop3URLNameUsingEmailAddress();
+                System.out.println("---15");
+                checkPop3Connection(url);
+                System.out.println("---16");
+                propertiesStorage.setUseFullEmailAddress(TRUE);
+            }
+            
         }
     }
 
@@ -57,20 +108,6 @@ public class MailConnector {
         // } catch (MessagingException ex) {
         // throw new ConnectorException(ex);
         // }
-    }
-
-    public void checkPOP3Connection() throws ConnectorException {
-        int pop3Port = getPop3Port();
-        URLName url = new URLName(POP3, propertiesStorage.getPop3Properties().getProperty(MAIL_POP3_HOST_PROPERTY), 
-                pop3Port, "", propertiesStorage.getUsername()/*"andrey.pereverzin@gmail.com"*/, propertiesStorage.getPassword());
-
-        Session session = Session.getInstance(propertiesStorage.getPop3Properties(), null);
-        POP3SSLStore store = new POP3SSLStore(session, url);
-        try {
-            store.connect();
-        } catch (MessagingException ex) {
-            throw new ConnectorException(ex);
-        }
     }
 
     public Set<Object> receiveMessages(String subject) throws ConnectorException {
@@ -123,6 +160,29 @@ public class MailConnector {
         }
     }
 
+    private void checkSmtpConnection(Session session) throws ConnectorException {
+        try {
+            Transport transport = session.getTransport(SMTP);
+            connectTransport(transport);
+            propertiesStorage.setSmtpCheckResult(SUCCESS);
+        } catch (MessagingException ex) {
+            propertiesStorage.setSmtpCheckResult(FAILURE);
+            throw new ConnectorException(ex);
+        }
+    }
+
+    private void checkPop3Connection(URLName url) throws ConnectorException {
+        Session session = Session.getInstance(propertiesStorage.getPop3Properties(), null);
+        POP3SSLStore store = new POP3SSLStore(session, url);
+        try {
+            store.connect();
+            propertiesStorage.setPop3CheckResult(SUCCESS);
+        } catch (MessagingException ex) {
+            propertiesStorage.setPop3CheckResult(FAILURE);
+            throw new ConnectorException(ex);
+        }
+    }
+
     private Message getMailMessageBySubject(Folder folder, String subject) throws ConnectorException {
         try {
             Message[] msgs = folder.search(new SubjectSearchTerm(subject));
@@ -155,17 +215,10 @@ public class MailConnector {
         Transport.send(mailMessage);
     }
 
-    public void connectTransport(Transport transport) throws MessagingException {
-        transport.connect(propertiesStorage.getSmtpProperties().getProperty(MAIL_SMTP_HOST_PROPERTY), Integer.parseInt(propertiesStorage.getSmtpProperties().getProperty(MAIL_SMTP_PORT_PROPERTY)),
-                propertiesStorage.getUsername(), propertiesStorage.getPassword());
-    }
-
-    private Session getSMTPSession() {
-        return Session.getInstance(propertiesStorage.getSmtpProperties(), new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(propertiesStorage.getUsername(), propertiesStorage.getPassword());
-            }
-        });
+    private void connectTransport(Transport transport) throws MessagingException {
+        String host = propertiesStorage.getSmtpProperties().getProperty(MAIL_SMTP_HOST_PROPERTY);
+        int port = Integer.parseInt(propertiesStorage.getSmtpProperties().getProperty(MAIL_SMTP_PORT_PROPERTY));
+        transport.connect(host, port, propertiesStorage.getUsername(), propertiesStorage.getPassword());
     }
 
     private Store getPop3Store() throws MessagingException {
@@ -176,14 +229,5 @@ public class MailConnector {
         store.connect();
 
         return store;
-    }
-    
-    private int getPop3Port() {
-        String port = propertiesStorage.getPop3Properties().getProperty(MAIL_POP3_PORT_PROPERTY);
-        if (port == null) {
-            port = propertiesStorage.getPop3Properties().getProperty(MAIL_POP3S_PORT_PROPERTY);
-        }
-        
-        return Integer.parseInt(port);
     }
 }
