@@ -163,7 +163,7 @@ public class MailPropertiesStorage {
     }
     
     public boolean isUseFullEmailAddressFalse() {
-        return !useFullEmailAddress.isFalse();
+        return useFullEmailAddress.isFalse();
     }
     
     public void setUseFullEmailAddress(TrueFalse val) {
@@ -291,15 +291,13 @@ public class MailPropertiesStorage {
         if (username == null) {
             username = extractUsernameFromEmailAddress();
         }
-        
+
         String useFullEmailAddressProp = mailProps.getProperty(USE_FULL_EMAIL_ADDRESS_PROPERTY);
-        System.out.println("----------useFullEmailAddressProp: " + useFullEmailAddressProp);
         if (useFullEmailAddressProp == null) {
             useFullEmailAddress = UNDEFINED;
         } else {
             useFullEmailAddress = TrueFalse.byVal(useFullEmailAddressProp);
         }
-        System.out.println("----------useFullEmailAddress: " + useFullEmailAddress.getVal());
         smtpCheckResult = getCheckResultFromProps(SMTP_CHECK_RESULT_PROPERTY);
         pop3CheckResult = getCheckResultFromProps(POP3_CHECK_RESULT_PROPERTY);
         imapCheckResult = getCheckResultFromProps(IMAP_CHECK_RESULT_PROPERTY);
@@ -322,8 +320,11 @@ public class MailPropertiesStorage {
     }
     
     private void setCheckResultProperties(Properties mailProps) {
-        if (mailProps.getProperty(USE_FULL_EMAIL_ADDRESS_PROPERTY) == null) {
+        String useFullEmailAddressStr = mailProps.getProperty(USE_FULL_EMAIL_ADDRESS_PROPERTY);
+        if (useFullEmailAddressStr == null) {
             mailProps.setProperty(USE_FULL_EMAIL_ADDRESS_PROPERTY, UNDEFINED.getVal());
+        } else {
+            setUseFullEmailAddress(TrueFalse.byVal(useFullEmailAddressStr));
         }
         setUnknown(mailProps, SMTP_CHECK_RESULT_PROPERTY);
         setUnknown(mailProps, POP3_CHECK_RESULT_PROPERTY);
