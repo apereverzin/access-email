@@ -14,14 +14,17 @@ public class SubjectSearchTerm extends SearchTerm {
     private String subj;
     
     public SubjectSearchTerm(String subj) {
-        this.subj= subj;
+        this.subj = subj;
     }
 
     @Override
     public boolean match(Message msg) {
         try {
-            System.out.println("-----subj: " + subj);
-            System.out.println("-----msg.getSubject(): " + msg.getSubject());
+//            System.out.println("-----subj: " + subj);
+//          System.out.println("-----msg.getSubject(): " + msg.getSubject());
+            if (subj.equalsIgnoreCase(msg.getSubject())) {
+                System.out.println("-----+++++++++++++++++++++++++++++++++++++++++msg.getSubject(): " + msg.getSubject());
+            }
             return subj.equalsIgnoreCase(msg.getSubject());
         } catch(MessagingException ex) {
             ex.printStackTrace();

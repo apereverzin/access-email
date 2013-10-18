@@ -17,6 +17,7 @@ import static com.creek.accessemail.connector.mail.TrueFalse.UNDEFINED;
  * @author Andrey Pereverzin
  */
 public class MailPropertiesStorage {
+    private static final String AT = "@";
     private String username;
     private String emailAddress;
     private final String password;
@@ -312,7 +313,7 @@ public class MailPropertiesStorage {
     }
     
     private String extractUsernameFromEmailAddress() {
-        StringTokenizer st = new StringTokenizer(emailAddress, "@");
+        StringTokenizer st = new StringTokenizer(emailAddress, AT);
         if (st.countTokens() == 2) {
             return st.nextToken();
         }
