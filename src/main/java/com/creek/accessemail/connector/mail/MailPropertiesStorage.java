@@ -1,7 +1,6 @@
 package com.creek.accessemail.connector.mail;
 
 import java.util.Properties;
-import java.util.StringTokenizer;
 
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
@@ -10,6 +9,7 @@ import javax.mail.URLName;
 import com.creek.accessemail.connector.mail.CheckResult;
 import com.creek.accessemail.connector.mail.TrueFalse;
 import static com.creek.accessemail.connector.mail.CheckResult.UNKNOWN;
+import static com.creek.accessemail.connector.mail.MailUtil.extractUsernameFromEmailAddress;
 import static com.creek.accessemail.connector.mail.TrueFalse.UNDEFINED;
 
 /**
@@ -17,7 +17,6 @@ import static com.creek.accessemail.connector.mail.TrueFalse.UNDEFINED;
  * @author Andrey Pereverzin
  */
 public class MailPropertiesStorage {
-    private static final String AT = "@";
     private String username;
     private String emailAddress;
     private final String password;
@@ -233,7 +232,7 @@ public class MailPropertiesStorage {
         imapCheckResult = res;
         setCheckResult(IMAP_CHECK_RESULT_PROPERTY, res);
     }
-
+    
     private String getAuthName() {
         final String authName;
         if (isUseFullEmailAddressTrue()) {
@@ -290,7 +289,7 @@ public class MailPropertiesStorage {
         emailAddress = mailProps.getProperty(EMAIL_ADDRESS_PROPERTY);
         username = mailProps.getProperty(MAIL_USERNAME_PROPERTY);
         if (username == null) {
-            username = extractUsernameFromEmailAddress();
+            username = extractUsernameFromEmailAddress(emailAddress);
         }
 
         String useFullEmailAddressProp = mailProps.getProperty(USE_FULL_EMAIL_ADDRESS_PROPERTY);
@@ -310,14 +309,6 @@ public class MailPropertiesStorage {
             return UNKNOWN;
         }
         return CheckResult.byVal(prop);
-    }
-    
-    private String extractUsernameFromEmailAddress() {
-        StringTokenizer st = new StringTokenizer(emailAddress, AT);
-        if (st.countTokens() == 2) {
-            return st.nextToken();
-        }
-        return emailAddress;
     }
     
     private void setCheckResultProperties(Properties mailProps) {
