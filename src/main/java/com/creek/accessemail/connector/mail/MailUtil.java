@@ -1,6 +1,8 @@
 package com.creek.accessemail.connector.mail;
 
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -8,8 +10,11 @@ import java.util.StringTokenizer;
  */
 public final class MailUtil {
     private static final String AT = "@";
-
-    public static String extractUsernameFromEmailAddress(String emailAddress) {
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final Pattern PATTERN = Pattern.compile(EMAIL_PATTERN);
+    
+    public static String extractUsernameFromEmailAddress(final String emailAddress) {
         if (emailAddress == null) {
             return "";
         }
@@ -22,7 +27,7 @@ public final class MailUtil {
         return emailAddress;
     }
     
-    public static String extractHostnameFromEmailAddress(String emailAddress) {
+    public static String extractHostnameFromEmailAddress(final String emailAddress) {
         if (emailAddress == null) {
             return "";
         }
@@ -36,11 +41,7 @@ public final class MailUtil {
         return null;
     }
     
-    public static boolean isEmailAddressValid(String emailAddress) {
-        return emailAddress != null && !emailAddress.contains(" ");
-    }
-    
-    public static boolean isEmailUsernameValid(String emailUsername) {
-        return emailUsername != null && !emailUsername.contains(AT);
-    }
+    public static boolean isEmailAddressValid(final String emailAddress) {
+        Matcher matcher = PATTERN.matcher(emailAddress);
+        return matcher.matches();    }
 }
