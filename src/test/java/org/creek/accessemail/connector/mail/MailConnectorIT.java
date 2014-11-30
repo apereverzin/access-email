@@ -1,16 +1,16 @@
-package com.creek.accessemail.connector.mail;
+package org.creek.accessemail.connector.mail;
 
 import java.util.Properties;
 import java.util.Set;
 
+import org.creek.accessemail.connector.mail.ConnectorException;
+import org.creek.accessemail.connector.mail.MailConnector;
+import org.creek.accessemail.connector.mail.MailPropertiesStorage;
+import org.creek.accessemail.connector.mail.PredefinedMailProperties;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.creek.accessemail.connector.mail.ConnectorException;
-import com.creek.accessemail.connector.mail.MailConnector;
-import com.creek.accessemail.connector.mail.MailPropertiesStorage;
-import com.creek.accessemail.connector.mail.PredefinedMailProperties;
 
 /**
  * 
@@ -27,7 +27,7 @@ public class MailConnectorIT {
     private static final String USERNAME = "andrey.pereverzin";
     private static final String YAHOO_USERNAME = "andrey.pereverzin@yahoo.com";
     private static final String HOTMAIL_USERNAME = "andrey.pereverzin@hotmail.com";
-    private static final String PASSWORD = "bertoluCCi";
+    private static final String PASSWORD = "XXXXXXXXXX";
     
     @Before
     public void setUp() {

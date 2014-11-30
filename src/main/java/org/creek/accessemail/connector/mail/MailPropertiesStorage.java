@@ -1,4 +1,4 @@
-package com.creek.accessemail.connector.mail;
+package org.creek.accessemail.connector.mail;
 
 import java.util.Properties;
 
@@ -6,11 +6,12 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.URLName;
 
-import com.creek.accessemail.connector.mail.CheckResult;
-import com.creek.accessemail.connector.mail.TrueFalse;
-import static com.creek.accessemail.connector.mail.CheckResult.UNKNOWN;
-import static com.creek.accessemail.connector.mail.MailUtil.extractUsernameFromEmailAddress;
-import static com.creek.accessemail.connector.mail.TrueFalse.UNDEFINED;
+import org.creek.accessemail.connector.mail.CheckResult;
+import org.creek.accessemail.connector.mail.TrueFalse;
+
+import static org.creek.accessemail.connector.mail.CheckResult.UNKNOWN;
+import static org.creek.accessemail.connector.mail.MailUtil.extractUsernameFromEmailAddress;
+import static org.creek.accessemail.connector.mail.TrueFalse.UNDEFINED;
 
 /**
  * 

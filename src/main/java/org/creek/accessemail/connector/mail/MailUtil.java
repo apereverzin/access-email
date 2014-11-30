@@ -1,4 +1,4 @@
-package com.creek.accessemail.connector.mail;
+package org.creek.accessemail.connector.mail;
 
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;

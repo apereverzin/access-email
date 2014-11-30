@@ -1,33 +1,33 @@
-package com.creek.accessemail.connector.mail;
+package org.creek.accessemail.connector.mail;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.USE_FULL_EMAIL_ADDRESS_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_STORE_PROTOCOL_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_HOST_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_PORT_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_AUTH_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_SOCKET_FACTORY_PORT_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_SOCKET_FACTORY_CLASS_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_STARTTLS_ENABLE_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_HOST_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_PORT_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_SOCKET_FACTORY_PORT_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_SOCKET_FACTORY_CLASS_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_SOCKET_FACTORY_FALLBACK_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_PORT_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_SOCKET_FACTORY_PORT_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_SOCKET_FACTORY_CLASS_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_SOCKET_FACTORY_FALLBACK_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_SSL_ENABLE_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_IMAP_HOST_PROPERTY;
-import static com.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_IMAP_PORT_PROPERTY;
 
-import static com.creek.accessemail.connector.mail.TrueFalse.TRUE;
-import static com.creek.accessemail.connector.mail.TrueFalse.FALSE;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_IMAP_HOST_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_IMAP_PORT_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_PORT_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_SOCKET_FACTORY_CLASS_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_SOCKET_FACTORY_FALLBACK_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_SOCKET_FACTORY_PORT_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3S_SSL_ENABLE_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_HOST_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_PORT_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_SOCKET_FACTORY_CLASS_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_SOCKET_FACTORY_FALLBACK_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_POP3_SOCKET_FACTORY_PORT_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_AUTH_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_HOST_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_PORT_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_SOCKET_FACTORY_CLASS_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_SOCKET_FACTORY_PORT_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_SMTP_STARTTLS_ENABLE_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.MAIL_STORE_PROTOCOL_PROPERTY;
+import static org.creek.accessemail.connector.mail.MailPropertiesStorage.USE_FULL_EMAIL_ADDRESS_PROPERTY;
+import static org.creek.accessemail.connector.mail.TrueFalse.FALSE;
+import static org.creek.accessemail.connector.mail.TrueFalse.TRUE;
 
 /**
  * 
